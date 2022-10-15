@@ -1,17 +1,27 @@
 import { useContext } from 'react'
 import { GlobalStoreContext } from '../store'
+import { useHistory } from 'react-router-dom'
 function DeleteListModal(){
     const { store } = useContext(GlobalStoreContext);
+    //const history = useHistory();
 
     function handleCancel(event){
         event.stopPropagation();
         store.setExitModal();
+        
     }
     function handleConfirm(event){
         event.stopPropagation();
         store.deletePlayListById();
+        //store.setExitModal();
+       
+        togglewhat();
     }
-
+    function togglewhat(){
+        //history.push("/");
+        console.log("hey");
+        store.loadIdNamePairs();
+    }
 
     let deleteModal = <div></div>
     //console.log(store.listToBeDeleted);
