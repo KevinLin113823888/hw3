@@ -30,6 +30,17 @@ function ListCard(props) {
         event.stopPropagation();
         toggleEdit();
     }
+    function handleToggleDelete(event){
+        event.stopPropagation();
+        if (!event.target.disabled) {
+            let _id = event.target.id;
+            if (_id.indexOf('delete-list-') >= 0)
+                _id = ("" + _id).substring("delete-list-".length);
+
+            // CHANGE THE CURRENT LIST
+            store.setListToBeDeleted(_id);
+        }
+    }
 
     function toggleEdit() {
         let newActive = !editActive;
@@ -75,6 +86,7 @@ function ListCard(props) {
                 type="button"
                 id={"delete-list-" + idNamePair._id}
                 className="list-card-button"
+                onClick={handleToggleDelete}
                 value={"\u2715"}
             />
             <input

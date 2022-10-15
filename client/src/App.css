@@ -167,8 +167,8 @@ input {
   background: var(--black);
   color: var(--swatch-text);
   cursor: pointer;
-  visibility: hidden;
-  opacity: 0;
+  visibility: visible;
+  opacity: 1;
   transition: all 0.35s ease-in;
   font-family: var(--font-primary);
 }
