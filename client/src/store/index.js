@@ -1,6 +1,7 @@
 import { createContext, useState } from 'react'
 import jsTPS from '../common/jsTPS'
 import api from '../api'
+import AddSong_Transaction from '../transactions/AddSong_Transaction';
 export const GlobalStoreContext = createContext({});
 /*
     This is our global data store. Note that it uses the Flux design pattern,
@@ -58,7 +59,7 @@ export const useGlobalStore = () => {
                     newListCounter: store.newListCounter,
                     listNameActive: false,
                     listToBeDeleted: ""
-                })
+                });
             }
             // CREATE A NEW LIST
             case GlobalStoreActionType.CREATE_NEW_LIST: {
@@ -68,7 +69,7 @@ export const useGlobalStore = () => {
                     newListCounter: store.newListCounter + 1,
                     listNameActive: false,
                     listToBeDeleted: ""
-                })
+                });
             }
             // GET ALL THE LISTS SO WE CAN PRESENT THEM
             case GlobalStoreActionType.LOAD_ID_NAME_PAIRS: {
@@ -119,6 +120,7 @@ export const useGlobalStore = () => {
                     listToBeDeleted: payload
                 });
             }
+            
             default:
                 return store;
         }
@@ -194,8 +196,10 @@ export const useGlobalStore = () => {
             let response = await api.getPlaylistById(id);
             if (response.data.success) {
                 let playlist = response.data.playlist;
+                
 
                 if (response.data.success) {
+                    
                     storeReducer({
                         type: GlobalStoreActionType.SET_CURRENT_LIST,
                         payload: playlist
@@ -237,6 +241,74 @@ export const useGlobalStore = () => {
         }asyncDeleteList();
         //store.loadIdNamePairs();
 
+    }
+    store.addAddSongTransaction = function(id){
+        let transaction = new AddSong_Transaction(store,id);
+        tps.addTransaction(transaction);
+    }
+    store.addSong = function(id){
+        async function asyncAddSong(){
+            let response = await api.getPlaylistById(id);
+            let hexValue3 = "";
+            if (response.data.success) {
+                let playlist = response.data.playlist;
+                if(store.getPlaylistSize()>0){
+                let length = playlist.songs[store.getPlaylistSize()-1]._id.length;
+                let hexValue = playlist.songs[store.getPlaylistSize()-1]._id.substring(length-4);
+                let hexValue2 = playlist.songs[store.getPlaylistSize()-1]._id.substring(0,length-4);
+                console.log(hexValue2);
+                console.log(playlist.songs[store.getPlaylistSize()-1]._id);
+                hexValue = "0x" + hexValue;
+                hexValue = parseInt(hexValue, 16);
+                hexValue++;
+                hexValue = hexValue.toString(16);
+                hexValue3 = hexValue2 +"" +hexValue;
+                
+                }else{
+                    let length = playlist._id.length;
+                    let hexValue = playlist._id.substring(length-4);
+                    let hexValue2 = playlist._id.substring(0,length-4);
+                    hexValue = "0x" + hexValue;
+                    hexValue = parseInt(hexValue, 16);
+                    hexValue++;
+                    
+                    hexValue = hexValue.toString(16);
+                    hexValue3 = hexValue2 + "" + hexValue;
+                    console.log(hexValue);
+                    console.log(hexValue2);
+                    console.log(hexValue3);
+                }
+                let newsong = {_id: hexValue3, title:"Untitled",artist:"Unknown",youTubeId:"dQw4w9WgXcQ"};
+                playlist.songs.push(newsong);
+                async function updateList(playlist) {   
+                    response = await api.updatePlaylistById(playlist._id, playlist); 
+                    if (response.data.success) {
+                        storeReducer({
+                            type: GlobalStoreActionType.SET_CURRENT_LIST,
+                            payload: playlist
+                        });
+                    }
+                }updateList(playlist);
+            }
+        }asyncAddSong();
+    }
+    store.removeNewSong = function(id){
+        async function asyncAddSong(){
+            let response = await api.getPlaylistById(id);
+            if (response.data.success) {
+                let playlist = response.data.playlist;
+                playlist.songs.pop();
+                async function updateList(playlist) {   
+                    response = await api.updatePlaylistById(playlist._id, playlist); 
+                    if (response.data.success) {
+                        storeReducer({
+                            type: GlobalStoreActionType.SET_CURRENT_LIST,
+                            payload: playlist
+                        });
+                    }
+                }updateList(playlist);
+            }
+        }asyncAddSong();
     }
 
     // THIS FUNCTION ENABLES THE PROCESS OF EDITING A LIST NAME
