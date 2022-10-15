@@ -227,12 +227,15 @@ export const useGlobalStore = () => {
         async function asyncDeleteList() {
             let response = await api.deletePlayListById(store.listToBeDeleted);
             if (response.data.success) {
+                store.loadIdNamePairs();
                 storeReducer({
                     type: GlobalStoreActionType.MARK_LIST_FOR_DELETION,
                     payload: ""
                 });
             }
+            //store.loadIdNamePairs();
         }asyncDeleteList();
+        //store.loadIdNamePairs();
 
     }
 
