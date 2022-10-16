@@ -10,6 +10,20 @@ function SongCard(props) {
         event.dataTransfer.setData("song", event.target.id);
         setIsDragging(true);
     }
+    function handleToggleDelete(event){
+        event.stopPropagation();
+        if (!event.target.disabled) {
+            let _id = event.target.id;
+            if (_id.indexOf('remove-song-') >= 0)
+                _id = ("" + _id).substring("remove-song-".length);
+            console.log(_id);
+            // CHANGE THE CURRENT LIST
+            _id = parseInt(_id);
+            store.setSongToBeDeleted(_id);
+            
+        }
+    }
+
     function handleClick(event){
         
         let target = event.target;
@@ -85,6 +99,7 @@ function SongCard(props) {
                 type="button"
                 id={"remove-song-" + index}
                 className="list-card-button"
+                onClick = {handleToggleDelete}
                 value={"\u2715"}
             />
         </div>
