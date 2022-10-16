@@ -245,6 +245,9 @@ input {
 #close-modal-button {
   float:right;
 }
+#cancel-modal-button{
+  float:left;
+}
 
 #confirm-cancel-container {
   text-align:center;

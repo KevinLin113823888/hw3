@@ -354,10 +354,21 @@ export const useGlobalStore = () => {
         return store.currentList.songs.length;
     }
     store.undo = function () {
-        tps.undoTransaction();
+        if (tps.hasTransactionToUndo()){
+            tps.undoTransaction();
+        }
+            
     }
     store.redo = function () {
-        tps.doTransaction();
+        if (tps.hasTransactionToRedo()){
+            tps.doTransaction();
+        }
+    }
+    store.canUndo = function(){
+        return tps.hasTransactionToUndo()
+    }
+    store.canRedo = function(){
+        return tps.hasTransactionToRedo()
     }
 
     store.setListToBeDeleted= function (id){
@@ -566,7 +577,7 @@ export const useGlobalStore = () => {
     }
     store.createNewList = function(){
         async function asyncCreateNewList(){
-            const payload = {name:"Untitled","songs": []};
+            const payload = {name:"Untitled" + store.newListCounter,"songs": []};
             let response = await api.createPlaylist(payload);
             if(response.data.success){
                 response = await api.getAllPlaylists();

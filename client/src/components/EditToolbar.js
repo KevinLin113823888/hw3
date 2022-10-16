@@ -12,7 +12,14 @@ function EditToolbar() {
     const history = useHistory();
     //const [editActive, setEditActive ] = useState(false);
     let enabledButtonClass = "playlister-button";
-
+    let enabledUndoClass = enabledButtonClass;
+    let enabledRedoClass = enabledButtonClass;
+    if(!store.canUndo()){
+        enabledUndoClass = "playlister-button-disabled";
+    }
+    if(!store.canRedo()){
+        enabledRedoClass = "playlister-button-disabled";
+    }
     function handleUndo() {
         store.undo();
     }
@@ -36,6 +43,8 @@ function EditToolbar() {
 
     if(isEditing==true){
         enabledButtonClass = "playlister-button-disabled";
+        enabledRedoClass = "playlister-button-disabled";
+        enabledUndoClass = "playlister-button-disabled";    
     }
 
     let editStatus = false;
@@ -57,7 +66,7 @@ function EditToolbar() {
                 id='undo-button'
                 disabled={editStatus}
                 value="⟲"
-                className={enabledButtonClass}
+                className={enabledUndoClass}
                 onClick={handleUndo}
             />
             <input
@@ -65,7 +74,7 @@ function EditToolbar() {
                 id='redo-button'
                 disabled={editStatus}
                 value="⟳"
-                className={enabledButtonClass}
+                className={enabledRedoClass}
                 onClick={handleRedo}
             />
             <input

@@ -37,7 +37,7 @@ function RemoveSongModal(){
                 <div class="modal-footer" id = "confirm-cancel-container">
                     <input type="button" 
                         id="remove-song-confirm-button" 
-                        class="modal-button" 
+                        class="cancel-modal-button" 
                         onClick={handleConfirm}
                         value='Confirm' />
                     <input type="button" 
