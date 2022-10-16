@@ -25,7 +25,7 @@ function DeleteListModal(){
 
     let deleteModal = <div></div>
     //console.log(store.listToBeDeleted);
-    if(store.listToBeDeleted!=""){
+    if(store.listToBeDeleted!="" && store.listToDelete!=null){
         
       deleteModal = <div 
         class="modal is-visible" 
@@ -37,7 +37,7 @@ function DeleteListModal(){
                 </div>
                 <div class="modal-header">
                     <div class="modal-center-content">
-                        Are you sure you wish to permanently delete the  playlist?
+                        Are you sure you wish to permanently delete the {store.listToDelete.name} playlist?
                     </div>
                 </div>
                 <div class="modal-footer" id = "confirm-cancel-container">

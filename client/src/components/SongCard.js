@@ -7,16 +7,21 @@ function SongCard(props) {
     const [ draggedTo, setDraggedTo ] = useState(false);
 
     function handleDragStart(event){
-        //event.preventDefault();
         event.dataTransfer.setData("song", event.target.id);
-        //console.log("HEY THERE");
-        //let newDragging = !isDragging;
-        //setIsDragging(newDragging);
         setIsDragging(true);
-        //console.log(isDragging);
-        //store.setDragStart();
     }
-
+    function handleClick(event){
+        
+        let target = event.target;
+        if (!event.target.disabled) {
+            let targetId = event.target.id;
+            targetId = targetId.substring(target.id.indexOf("-") + 1,targetId.indexOf("c")-1);
+            console.log(targetId);
+            // CHANGE THE CURRENT LIST
+            store.setListToBeEdited(targetId,store.currentList._id);
+            
+        }
+    }
     function handleDragOver(event) {
         event.preventDefault();
         setDraggedTo(true);
@@ -61,6 +66,7 @@ function SongCard(props) {
             key={index}
             id={'song-' + index + '-card'}
             className={itemClass}
+            onDoubleClick={handleClick}
             onDragStart={handleDragStart}
             onDragOver={handleDragOver}
             onDragEnter={handleDragEnter}
