@@ -20,8 +20,9 @@ function EditSongModal(){
     function handleConfirm(){
         //event.stopPropagation();
        
-    
-        store.addEditSongTransaction(text1,text2,text3,store.editSongId,text4,text5,text6);
+        if(!(text1==text4&&text2==text5&&text3==text6)){
+            store.addEditSongTransaction(text1,text2,text3,store.editSongId,text4,text5,text6);
+        }
         store.unsetEditSong();
         setStartActive(true);
         console.log("change");
