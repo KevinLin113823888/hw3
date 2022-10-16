@@ -13,12 +13,30 @@ function EditSongModal(){
     function handleCancel(event){
         //event.stopPropagation();
         store.unsetEditSong();
+        setStartActive(true);
+        console.log("change");
+        console.log(startActive);
     }
     function handleConfirm(){
         //event.stopPropagation();
        
+    
         store.addEditSongTransaction(text1,text2,text3,store.editSongId,text4,text5,text6);
-
+        store.unsetEditSong();
+        setStartActive(true);
+        console.log("change");
+        console.log(startActive);
+    }
+    console.log(startActive);
+    let saveText1 = "";
+    /*let starting = true;
+    if(store.songToBeEdited!=null){
+        starting = false;
+    }*/
+    //console.log(starting);
+    if(store.songToBeEdited!=null){
+        saveText1 = store.songToBeEdited.title;
+        
     }
     function setUpText(){
         setText1(store.songToBeEdited.title);
@@ -27,13 +45,14 @@ function EditSongModal(){
         setText4(store.songToBeEdited.title);
         setText5(store.songToBeEdited.artist);
         setText6(store.songToBeEdited.youTubeId);
-        setStartActive(!startActive);
+        console.log(startActive);
     }
 
     function handleUpdateText1(event) {
         setText1(event.target.value );
         console.log("title:");
         console.log(text1);
+        
     }
 
     function handleUpdateText2(event) {
@@ -48,10 +67,12 @@ function EditSongModal(){
         console.log("yt:");
         console.log(text3);
     }
-
+    
     if(store.songToBeEdited!=null){
+        console.log("WHAT");
         if(startActive){
             setUpText();
+            setStartActive(!startActive);
         }
         editSongModal = <div 
         class="modal is-visible" 

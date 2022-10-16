@@ -30,6 +30,7 @@ function SongCard(props) {
         if (!event.target.disabled) {
             let targetId = event.target.id;
             targetId = targetId.substring(target.id.indexOf("-") + 1,targetId.indexOf("c")-1);
+            console.log("SETTING");
             console.log(targetId);
             // CHANGE THE CURRENT LIST
             store.setListToBeEdited(targetId,store.currentList._id);

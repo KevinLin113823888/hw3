@@ -603,7 +603,7 @@ export const useGlobalStore = () => {
             if (response.data.success) {
                 let playlist = response.data.playlist;
                 let song = playlist.songs[songId];
-                console.log(song._id);
+                //console.log(song._id);
                 storeReducer({
                     type: GlobalStoreActionType.MARK_SONG_FOR_DELETION,
                     payload: {
