@@ -27,7 +27,8 @@ export const GlobalStoreActionType = {
     SET_EXIT_MODAL: "SET_EXIT_MODAL",
     UNSET_EDIT_SONG: "UNSET_EDIT_SONG",
     REFRESH_LIST: "REFRESH_LIST",
-    MARK_SONG_FOR_DELETION: "MARK_SONG_FOR_DELETION"
+    MARK_SONG_FOR_DELETION: "MARK_SONG_FOR_DELETION",
+    UNSET_REMOVE_SONG: "UNSET_REMOVE_SONG"
 }
 
 // WE'LL NEED THIS TO PROCESS TRANSACTIONS
@@ -244,7 +245,21 @@ export const useGlobalStore = () => {
                     songActualId: payload.songActualId
                 });
             }
-            
+            case GlobalStoreActionType.UNSET_REMOVE_SONG: {
+                return setStore({
+                    idNamePairs: store.idNamePairs,
+                    currentList: store.currentList,
+                    newListCounter: store.newListCounter,
+                    listNameActive: false,
+                    listToBeDeleted: "",
+                    listToDelete: null,
+                    songToBeEdited: null,
+                    editSongId: -1,
+                    songToBeDeleted: -1,
+                    songToDelete: null,
+                    songActualId: ""
+                });
+            }
             
             default:
                 return store;
@@ -386,8 +401,8 @@ export const useGlobalStore = () => {
         async function asyncDeleteList() {
             let response = await api.deletePlayListById(store.listToBeDeleted);
             if (response.data.success) {
-                //store.loadIdNamePairs();
-                store.refreshLists();
+                store.loadIdNamePairs();
+                //store.refreshLists();
                 storeReducer({
                     type: GlobalStoreActionType.MARK_LIST_FOR_DELETION,
                     payload: ""
@@ -534,6 +549,12 @@ export const useGlobalStore = () => {
     store.unsetEditSong = function(){
         storeReducer({
             type: GlobalStoreActionType.UNSET_EDIT_SONG,
+            payload: ""
+        });
+    }
+    store.unsetRemoveSong=function(){
+        storeReducer({
+            type: GlobalStoreActionType.UNSET_REMOVE_SONG,
             payload: ""
         });
     }

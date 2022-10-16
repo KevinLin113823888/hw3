@@ -1,4 +1,4 @@
-import { useContext } from 'react'
+import { useContext, useState } from 'react'
 import { GlobalStoreContext } from '../store'
 import { StaticRouter, useHistory } from 'react-router-dom'
 /*
@@ -10,7 +10,7 @@ import { StaticRouter, useHistory } from 'react-router-dom'
 function EditToolbar() {
     const { store } = useContext(GlobalStoreContext);
     const history = useHistory();
-
+    //const [editActive, setEditActive ] = useState(false);
     let enabledButtonClass = "playlister-button";
 
     function handleUndo() {
@@ -24,9 +24,20 @@ function EditToolbar() {
         store.closeCurrentList();
     }
     function handleAddSong(){
-        
+        if(store.currentList!=null){
         store.addAddSongTransaction(store.currentList._id);
+        }
     }
+    let isEditing = false;
+    if(store.currentList==null||store.listToDelete!=null||store.songToBeEdited!=null||store.songToDelete!=null){
+        isEditing = true;   
+    }
+    
+
+    if(isEditing==true){
+        enabledButtonClass = "playlister-button-disabled";
+    }
+
     let editStatus = false;
     if (store.isListNameEditActive) {
         editStatus = true;

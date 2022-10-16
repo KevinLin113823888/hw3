@@ -6,7 +6,7 @@ function RemoveSongModal(){
 
     function handleCancel(event){
         event.stopPropagation();
-        //store.setExitModal();
+        store.unsetRemoveSong();
         
     }
     function handleConfirm(event){
